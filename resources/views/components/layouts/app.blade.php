@@ -24,7 +24,7 @@
                         </div>
                         <div>
                             <h1 class="text-lg font-bold text-gray-900">UptimeRobot</h1>
-                            <p class="text-xs text-gray-500">Univesitas Pattimura</p>
+                            <p class="text-xs text-gray-500">API Integration</p>
                         </div>
                     </a>
                 </div>
@@ -64,7 +64,8 @@
         <!-- Main Content Area -->
         <div class="flex flex-1 flex-col overflow-hidden">
             <!-- Top Navbar -->
-            <header class="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm lg:px-6">
+            <header
+                class="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm lg:px-6">
                 <!-- Mobile menu button -->
                 <button type="button"
                     class="lg:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 hover:bg-gray-100">
