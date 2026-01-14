@@ -206,7 +206,7 @@
         </div>
     </div>
 
-    <!-- Chart.js -->
+    {{-- <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
     <!-- Realtime update script -->
@@ -767,5 +767,5 @@
         fetchChartData();
         fetchChartData1Hour();
         fetchChartData1Minute();
-    </script>
+    </script> --}}
 </x-layouts.app>
