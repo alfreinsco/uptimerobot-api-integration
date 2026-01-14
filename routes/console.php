@@ -9,7 +9,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-// Schedule monitor sync every 10 seconds
+// Schedule monitor sync every minute
 Schedule::call(function () {
     SyncUptimeRobotMonitors::dispatch();
-})->name('sync-uptimerobot-monitors')->everyTenSeconds()->withoutOverlapping();
+})->name('sync-uptimerobot-monitors')->everyMinute()->withoutOverlapping();
