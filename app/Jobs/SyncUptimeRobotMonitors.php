@@ -125,6 +125,15 @@ class SyncUptimeRobotMonitors implements ShouldBeUnique, ShouldQueue
                 'created' => $createdCount,
                 'total' => count($data['monitors']),
             ]);
+
+            // Hapus data yang sudah lebih dari 1 hari
+            $deletedCount = $this->deleteOldMonitors();
+
+            if ($deletedCount > 0) {
+                Log::info('Old monitors deleted', [
+                    'deleted' => $deletedCount,
+                ]);
+            }
         } catch (\Exception $e) {
             Log::error('Error syncing UptimeRobot monitors', [
                 'message' => $e->getMessage(),
@@ -132,6 +141,25 @@ class SyncUptimeRobotMonitors implements ShouldBeUnique, ShouldQueue
             ]);
 
             throw $e;
+        }
+    }
+
+    /**
+     * Delete monitors older than 1 day
+     */
+    private function deleteOldMonitors(): int
+    {
+        try {
+            $oneDayAgo = now()->subDay();
+
+            return Monitor::where('created_at', '<', $oneDayAgo)->delete();
+        } catch (\Exception $e) {
+            Log::error('Error deleting old monitors', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return 0;
         }
     }
 
