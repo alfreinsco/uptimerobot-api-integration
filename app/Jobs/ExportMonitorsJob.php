@@ -69,6 +69,14 @@ class ExportMonitorsJob implements ShouldQueue
                 });
             }
 
+            // Filter by date range (created_at)
+            if (isset($this->filters['date_from']) && $this->filters['date_from']) {
+                $query->whereDate('created_at', '>=', $this->filters['date_from']);
+            }
+            if (isset($this->filters['date_to']) && $this->filters['date_to']) {
+                $query->whereDate('created_at', '<=', $this->filters['date_to']);
+            }
+
             $totalRecords = $query->count();
 
             $this->export->update([

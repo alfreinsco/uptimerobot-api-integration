@@ -62,8 +62,18 @@
                 <label class="text-sm font-medium text-gray-700">URL Group:</label>
                 <select id="filter-url-group"
                     class="filter-select rounded-lg border-gray-300 text-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    <option value="Semua">Memuat...</option>
+                    <option value="Semua ...">Memuat...</option>
                 </select>
+            </div>
+            <div class="flex items-center gap-2">
+                <label class="text-sm font-medium text-gray-700">Dari Tanggal:</label>
+                <input type="date" id="filter-date-from"
+                    class="filter-date rounded-lg border-gray-300 text-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div>
+            <div class="flex items-center gap-2">
+                <label class="text-sm font-medium text-gray-700">Sampai Tanggal:</label>
+                <input type="date" id="filter-date-to"
+                    class="filter-date rounded-lg border-gray-300 text-sm focus:border-indigo-500 focus:ring-indigo-500">
             </div>
             <div class="ml-auto">
                 <div class="relative">
@@ -245,6 +255,8 @@
             type: 'Semua',
             urlGroup: 'Semua',
             search: '',
+            dateFrom: '',
+            dateTo: '',
         };
 
         // Helper functions untuk status dan type
@@ -431,42 +443,42 @@
                             </div>
 
                             ${monitor.type == 2 ? `
-                                                                        <!-- Keyword Settings -->
-                                                                        <div>
-                                                                            <h4 class="mb-3 text-sm font-semibold text-gray-700 uppercase tracking-wider">Pengaturan Keyword</h4>
-                                                                            <dl class="space-y-2">
+                                                                                <!-- Keyword Settings -->
                                                                                 <div>
-                                                                                    <dt class="text-xs font-medium text-gray-500">Keyword Type</dt>
-                                                                                    <dd class="mt-1 text-sm text-gray-900">${monitor.keyword_type || '-'}</dd>
+                                                                                    <h4 class="mb-3 text-sm font-semibold text-gray-700 uppercase tracking-wider">Pengaturan Keyword</h4>
+                                                                                    <dl class="space-y-2">
+                                                                                        <div>
+                                                                                            <dt class="text-xs font-medium text-gray-500">Keyword Type</dt>
+                                                                                            <dd class="mt-1 text-sm text-gray-900">${monitor.keyword_type || '-'}</dd>
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <dt class="text-xs font-medium text-gray-500">Keyword Case Type</dt>
+                                                                                            <dd class="mt-1 text-sm text-gray-900">${monitor.keyword_case_type || '-'}</dd>
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <dt class="text-xs font-medium text-gray-500">Keyword Value</dt>
+                                                                                            <dd class="mt-1 text-sm text-gray-900 break-all">${monitor.keyword_value || '-'}</dd>
+                                                                                        </div>
+                                                                                    </dl>
                                                                                 </div>
-                                                                                <div>
-                                                                                    <dt class="text-xs font-medium text-gray-500">Keyword Case Type</dt>
-                                                                                    <dd class="mt-1 text-sm text-gray-900">${monitor.keyword_case_type || '-'}</dd>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <dt class="text-xs font-medium text-gray-500">Keyword Value</dt>
-                                                                                    <dd class="mt-1 text-sm text-gray-900 break-all">${monitor.keyword_value || '-'}</dd>
-                                                                                </div>
-                                                                            </dl>
-                                                                        </div>
-                                                                        ` : ''}
+                                                                                ` : ''}
 
                             ${(monitor.http_username || monitor.http_password) ? `
-                                                                        <!-- HTTP Authentication -->
-                                                                        <div>
-                                                                            <h4 class="mb-3 text-sm font-semibold text-gray-700 uppercase tracking-wider">HTTP Authentication</h4>
-                                                                            <dl class="space-y-2">
+                                                                                <!-- HTTP Authentication -->
                                                                                 <div>
-                                                                                    <dt class="text-xs font-medium text-gray-500">Username</dt>
-                                                                                    <dd class="mt-1 text-sm text-gray-900">${monitor.http_username || '-'}</dd>
+                                                                                    <h4 class="mb-3 text-sm font-semibold text-gray-700 uppercase tracking-wider">HTTP Authentication</h4>
+                                                                                    <dl class="space-y-2">
+                                                                                        <div>
+                                                                                            <dt class="text-xs font-medium text-gray-500">Username</dt>
+                                                                                            <dd class="mt-1 text-sm text-gray-900">${monitor.http_username || '-'}</dd>
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <dt class="text-xs font-medium text-gray-500">Password</dt>
+                                                                                            <dd class="mt-1 text-sm text-gray-900">${monitor.http_password ? '*'.repeat(Math.min(monitor.http_password.length, 10)) : '-'}</dd>
+                                                                                        </div>
+                                                                                    </dl>
                                                                                 </div>
-                                                                                <div>
-                                                                                    <dt class="text-xs font-medium text-gray-500">Password</dt>
-                                                                                    <dd class="mt-1 text-sm text-gray-900">${monitor.http_password ? '*'.repeat(Math.min(monitor.http_password.length, 10)) : '-'}</dd>
-                                                                                </div>
-                                                                            </dl>
-                                                                        </div>
-                                                                        ` : ''}
+                                                                                ` : ''}
 
                             <!-- Timestamps -->
                             <div>
@@ -537,12 +549,16 @@
             filters.type = 'Semua';
             filters.urlGroup = 'Semua';
             filters.search = '';
+            filters.dateFrom = '';
+            filters.dateTo = '';
 
             // Reset filter UI elements
             document.getElementById('filter-status').value = 'Semua';
             document.getElementById('filter-type').value = 'Semua';
             document.getElementById('filter-url-group').value = 'Semua';
             document.getElementById('filter-search').value = '';
+            document.getElementById('filter-date-from').value = '';
+            document.getElementById('filter-date-to').value = '';
 
             // Show loading animation on refresh button
             const refreshBtn = document.getElementById('refresh-btn');
@@ -601,6 +617,12 @@
                 }
                 if (filters.search) {
                     params.append('search', filters.search);
+                }
+                if (filters.dateFrom) {
+                    params.append('date_from', filters.dateFrom);
+                }
+                if (filters.dateTo) {
+                    params.append('date_to', filters.dateTo);
                 }
 
                 const response = await fetch(`${apiUrl}?${params.toString()}`);
@@ -779,6 +801,16 @@
                 resetAndReload();
             });
 
+            document.getElementById('filter-date-from').addEventListener('change', function() {
+                filters.dateFrom = this.value;
+                resetAndReload();
+            });
+
+            document.getElementById('filter-date-to').addEventListener('change', function() {
+                filters.dateTo = this.value;
+                resetAndReload();
+            });
+
             // Search with debounce
             document.getElementById('filter-search').addEventListener('input', function() {
                 clearTimeout(searchTimeout);
@@ -907,6 +939,12 @@
             }
             if (filters.search) {
                 params.append('search', filters.search);
+            }
+            if (filters.dateFrom) {
+                params.append('date_from', filters.dateFrom);
+            }
+            if (filters.dateTo) {
+                params.append('date_to', filters.dateTo);
             }
 
             // Submit export request

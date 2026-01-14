@@ -21,6 +21,8 @@ class MonitorController extends Controller
         $type = $request->get('type');
         $search = $request->get('search');
         $urlGroup = $request->get('url_group');
+        $dateFrom = $request->get('date_from');
+        $dateTo = $request->get('date_to');
 
         $query = Monitor::query();
 
@@ -67,6 +69,14 @@ class MonitorController extends Controller
                     ->orWhere('url', 'like', 'http://'.$urlGroup.'%')
                     ->orWhere('url', 'like', $urlGroup.'%');
             });
+        }
+
+        // Filter by date range (created_at)
+        if ($dateFrom) {
+            $query->whereDate('created_at', '>=', $dateFrom);
+        }
+        if ($dateTo) {
+            $query->whereDate('created_at', '<=', $dateTo);
         }
 
         $monitors = $query->orderBy('id', 'desc')
@@ -119,6 +129,8 @@ class MonitorController extends Controller
             'type' => $request->get('type', 'Semua'),
             'search' => $request->get('search', ''),
             'url_group' => $request->get('url_group', 'Semua'),
+            'date_from' => $request->get('date_from', ''),
+            'date_to' => $request->get('date_to', ''),
         ];
 
         $filename = 'data-monitor-'.now()->format('Y-m-d-H').'.xlsx';
